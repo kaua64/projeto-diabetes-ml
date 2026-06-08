@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 colunas = [
@@ -30,12 +32,17 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-modelo = LogisticRegression(max_iter=1000)
+modelos = {
+    "Regressão Logística": LogisticRegression(max_iter=1000),
+    "Árvore de Decisão": DecisionTreeClassifier(random_state=42),
+    "Random Forest": RandomForestClassifier(random_state=42)
+}
 
-modelo.fit(X_train, y_train)
+for nome, modelo in modelos.items():
+    modelo.fit(X_train, y_train)
 
-previsoes = modelo.predict(X_test)
+    previsoes = modelo.predict(X_test)
 
-acuracia = accuracy_score(y_test, previsoes)
+    acuracia = accuracy_score(y_test, previsoes)
 
-print("Acurácia do modelo:", round(acuracia * 100, 2), "%")
+    print(f"{nome}: {acuracia * 100:.2f}%")
